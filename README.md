@@ -1,3 +1,4 @@
+======
 #-------------------------------------------------------------------------------
 # Copyright (c) 2013 95A31.
 # All rights reserved. This program and the accompanying materials
@@ -8,6 +9,7 @@
 # Contributors:
 #     95A31 - initial API and implementation
 #-------------------------------------------------------------------------------
+======
 JCEPIT
 ======
 
