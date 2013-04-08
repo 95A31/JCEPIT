@@ -14,6 +14,13 @@ import java.io.*;
 public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
+		
+		if(args.length < 2){
+			System.out.println("One or more argument(s) missing.");
+			System.out.println("EXAMPLE: java -jar JCEPIT.jar -R RabinExampleAutomata.txt");
+			System.out.println("EXAMPLE: java -jar JCEPIT.jar -B BUchiExampleAutomata.txt");
+			return;
+		}
 
 		if (args[0].matches("-B|-b")) {
 			Buchi BTA = Buchi.fromFile(args[1]);
