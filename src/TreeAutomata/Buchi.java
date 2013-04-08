@@ -163,9 +163,6 @@ public class Buchi extends Automata {
 					tmpSetOfStates = new HashSet<HashSet<Integer>>();
 				}
 				if (ac.contains(trans.rightChildren) && ac.contains(trans.rightChildren)) {
-					if(trans.leftChildren.equals(trans.rightChildren) && trans.node.equals(trans.leftChildren)){
-						
-					}
 					HashSet<Integer> tmpStates = new HashSet<Integer>();
 					tmpStates.add(trans.node);
 					tmpStates.add(trans.rightChildren);
@@ -188,7 +185,7 @@ public class Buchi extends Automata {
 						tmpSetOfStates.add(tmpStates);
 					}
 					transToEliminate.add(trans);
-				} else if (fts.containsKey(trans.leftChildren) && fts.containsKey(trans.rightChildren) && !trans.leftChildren.equals(trans.rightChildren)) {					
+				} else if (fts.containsKey(trans.leftChildren) && fts.containsKey(trans.rightChildren) && (!trans.leftChildren.equals(trans.node) || !trans.rightChildren.equals(trans.node))) {					
 					for (HashSet<Integer> lt : fts.get(trans.leftChildren)) {
 						HashSet<Integer> tmpStates = (HashSet<Integer>) lt.clone();
 						tmpStates.add(trans.node);
