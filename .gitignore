@@ -8,5 +8,5 @@
 # Miscellanea Files #
 .*
 
-/bin
+bin/
 
