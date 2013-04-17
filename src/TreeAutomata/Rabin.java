@@ -1,6 +1,5 @@
 /*******************************************************************************
  * JCEPIT: Java Checker for Emptiness Problem on Infinite Trees
-
  *    
  * Copyright (C) 2013 95A31
  *

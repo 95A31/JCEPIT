@@ -126,7 +126,7 @@ public class Buchi extends Automata {
 						statesInSomeTree.addAll(t);
 					}
 				}
-				if (finiteTrees.keySet().equals(statesInSomeTree)) {
+				if (finiteTrees.keySet().containsAll(statesInSomeTree)) {
 					Buchi tmpBTA = (Buchi) this.clone();
 					tmpBTA.states = new HashSet<Integer>(finiteTrees.keySet());
 					tmpBTA.transitionRelation = tr;
@@ -171,38 +171,14 @@ public class Buchi extends Automata {
 				} else {
 					tmpSetOfStates = new HashSet<HashSet<Integer>>();
 				}
-				if (ac.contains(trans.rightChildren) && ac.contains(trans.rightChildren)) {
+				if ((ac.contains(trans.rightChildren) && ac.contains(trans.leftChildren))
+						|| fts.containsKey(trans.leftChildren) && ac.contains(trans.rightChildren)
+						|| fts.containsKey(trans.rightChildren) && ac.contains(trans.leftChildren)
+						|| fts.containsKey(trans.leftChildren) && fts.containsKey(trans.rightChildren)) {
 					HashSet<Integer> tmpStates = new HashSet<Integer>();
-					tmpStates.add(trans.node);
 					tmpStates.add(trans.rightChildren);
 					tmpStates.add(trans.leftChildren);
 					tmpSetOfStates.add(tmpStates);
-					transToEliminate.add(trans);
-				} else if (fts.containsKey(trans.leftChildren) && ac.contains(trans.rightChildren)) {
-					for (HashSet<Integer> t : fts.get(trans.leftChildren)) {
-						HashSet<Integer> tmpStates = (HashSet<Integer>) t.clone();
-						tmpStates.add(trans.node);
-						tmpStates.add(trans.rightChildren);
-						tmpSetOfStates.add(tmpStates);
-					}
-					transToEliminate.add(trans);
-				} else if (fts.containsKey(trans.rightChildren) && ac.contains(trans.leftChildren)) {
-					for (HashSet<Integer> t : fts.get(trans.rightChildren)) {
-						HashSet<Integer> tmpStates = (HashSet<Integer>) t.clone();
-						tmpStates.add(trans.node);
-						tmpStates.add(trans.leftChildren);
-						tmpSetOfStates.add(tmpStates);
-					}
-					transToEliminate.add(trans);
-				} else if (fts.containsKey(trans.leftChildren) && fts.containsKey(trans.rightChildren) && (!trans.leftChildren.equals(trans.node) || !trans.rightChildren.equals(trans.node))) {					
-					for (HashSet<Integer> lt : fts.get(trans.leftChildren)) {
-						HashSet<Integer> tmpStates = (HashSet<Integer>) lt.clone();
-						tmpStates.add(trans.node);
-						for (HashSet<Integer> rt : fts.get(trans.rightChildren)) {
-							tmpStates.addAll(rt);
-							tmpSetOfStates.add(tmpStates);
-						}
-					}
 					transToEliminate.add(trans);
 				}
 				if (!fts.containsKey(trans.node) && !tmpSetOfStates.isEmpty()) {
