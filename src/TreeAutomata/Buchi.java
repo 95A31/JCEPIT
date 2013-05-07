@@ -71,34 +71,34 @@ public class Buchi extends Automata {
 				state = 4;
 			} else {
 				switch (state) {
-					case 0:
-						a.add(line.charAt(0));
-						break;
+				case 0:
+					a.add(line.charAt(0));
+					break;
 
-					case 1:
-						s.add(Integer.parseInt(line));
-						break;
+				case 1:
+					s.add(Integer.parseInt(line));
+					break;
 
-					case 2:
-						is = Integer.parseInt(line);
-						break;
+				case 2:
+					is = Integer.parseInt(line);
+					break;
 
-					case 3:
-						String[] ss = line.split(" ");
-						Integer node = Integer.parseInt(ss[0]);
-						Character c = ss[1].charAt(0);
-						Integer leftChildren = Integer.parseInt(ss[3]);
-						Integer rightChildren = Integer.parseInt(ss[4]);
+				case 3:
+					String[] ss = line.split(" ");
+					Integer node = Integer.parseInt(ss[0]);
+					Character c = ss[1].charAt(0);
+					Integer leftChildren = Integer.parseInt(ss[3]);
+					Integer rightChildren = Integer.parseInt(ss[4]);
 
-						tr.add(new Transition(node, c, leftChildren, rightChildren));
-						break;
+					tr.add(new Transition(node, c, leftChildren, rightChildren));
+					break;
 
-					case 4:
-						ss = line.split(" ");
-						for (String str : ss) {
-							ac.add(Integer.parseInt(str));
-						}
-						break;
+				case 4:
+					ss = line.split(" ");
+					for (String str : ss) {
+						ac.add(Integer.parseInt(str));
+					}
+					break;
 				}
 			}
 		}
@@ -113,33 +113,27 @@ public class Buchi extends Automata {
 		HashSet<Integer> ac = (HashSet<Integer>) acceptanceCondition.clone();
 		Integer numberOfStates = states.size();
 
-		for (int i = 0; i < states.size(); i++) {
-			System.out.print("Checking for empty language... [" + (int) ((float) i / (float) states.size() * 100) + "%]\r");
-			HashMap<Integer, HashSet<HashSet<Integer>>> finiteTrees = calculateFiniteTrees(tr, numberOfStates, ac);
-			if (!finiteTrees.containsKey(initialState)) {
+		FiniteTreesTable ftt = new FiniteTreesTable(tr, ac);
+
+		for (int i = 0; i <= states.size(); i++) {
+			System.out.print("Checking for empty language... [" + (int) ((float) i / (float) (states.size() + 1) * 100) + "%]\r");
+			ftt.removeIncoerentTrees();
+			if (!ftt.containsBadStates() && !ftt.hasEmptyTreesSet(initialState)) {
+				Buchi tmpBTA = (Buchi) clone();
+				tmpBTA.states = ftt.getStates();				
+				removeIncoerentTransition(tmpBTA.transitionRelation, tmpBTA.states);
+				tmpBTA.states.remove(initialState);
 				System.out.println("Checking for empty language... [OK]   ");
-				return new Buchi();
-			} else {
-				HashSet<Integer> statesInSomeTree = new HashSet<Integer>();
-				for (HashSet<HashSet<Integer>> treeSet : finiteTrees.values()) {
-					for (HashSet<Integer> t : treeSet) {
-						statesInSomeTree.addAll(t);
-					}
-				}
-				if (finiteTrees.keySet().containsAll(statesInSomeTree)) {
-					Buchi tmpBTA = (Buchi) this.clone();
-					tmpBTA.states = new HashSet<Integer>(finiteTrees.keySet());
-					tmpBTA.transitionRelation = tr;
-					System.out.println("Checking for empty language... [OK]   ");
-					return tmpBTA;
-				}
+				return tmpBTA;
 			}
-			removeIncoerentTransition(tr, finiteTrees.keySet());
-			ac.retainAll(finiteTrees.keySet());
-			numberOfStates = finiteTrees.keySet().size();
 		}
 		System.out.println("Checking for empty language... [OK]   ");
 		return new Buchi();
+	}
+
+	@Override
+	public Object clone() {
+		return new Buchi((HashSet<Character>) alphabet.clone(), (HashSet<Integer>) states.clone(), initialState, (HashSet<Integer>) acceptanceCondition.clone(), (HashSet<Transition>) transitionRelation.clone());
 	}
 
 	private static void removeIncoerentTransition(HashSet<Transition> tr, Set<Integer> s) {
@@ -150,48 +144,6 @@ public class Buchi extends Automata {
 			}
 		}
 		tr.removeAll(transitionToEliminate);
-	}
-
-	public static HashMap<Integer, HashSet<HashSet<Integer>>> calculateFiniteTrees(HashSet<Transition> tr, Integer numberOfStates, HashSet<Integer> ac) {
-		HashMap<Integer, HashSet<HashSet<Integer>>> fts = new HashMap<Integer, HashSet<HashSet<Integer>>>();
-
-		HashSet<Transition> transRelWorkCopy = (HashSet<Transition>) tr.clone();
-		HashSet<Transition> transToEliminate = new HashSet<Transition>();
-
-		for (int i = 0; i < numberOfStates / 2; i++) {
-
-			transRelWorkCopy.removeAll(transToEliminate);
-			transToEliminate.clear();
-
-			for (Transition trans : transRelWorkCopy) {				
-				HashSet<HashSet<Integer>> tmpSetOfStates;
-
-				if (fts.containsKey(trans.node)) {
-					tmpSetOfStates = fts.get(trans.node);
-				} else {
-					tmpSetOfStates = new HashSet<HashSet<Integer>>();
-				}
-				if ((ac.contains(trans.rightChildren) && ac.contains(trans.leftChildren))
-						|| fts.containsKey(trans.leftChildren) && ac.contains(trans.rightChildren)
-						|| fts.containsKey(trans.rightChildren) && ac.contains(trans.leftChildren)
-						|| fts.containsKey(trans.leftChildren) && fts.containsKey(trans.rightChildren)) {
-					HashSet<Integer> tmpStates = new HashSet<Integer>();
-					tmpStates.add(trans.rightChildren);
-					tmpStates.add(trans.leftChildren);
-					tmpSetOfStates.add(tmpStates);
-					transToEliminate.add(trans);
-				}
-				if (!fts.containsKey(trans.node) && !tmpSetOfStates.isEmpty()) {
-					fts.put(trans.node, tmpSetOfStates);
-				}
-			}
-		}
-		return fts;
-	}
-
-	@Override
-	public Object clone() {
-		return new Buchi((HashSet<Character>) alphabet.clone(), (HashSet<Integer>) states.clone(), initialState, (HashSet<Integer>) acceptanceCondition.clone(), (HashSet<Transition>) transitionRelation.clone());
 	}
 
 	public void toImageFile(String fileName) throws IOException {
