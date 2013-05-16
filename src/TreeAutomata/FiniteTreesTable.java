@@ -23,21 +23,21 @@ public class FiniteTreesTable {
 
 			for (Transition trans : transRelWorkCopy) {
 				HashSet<HashSet<Integer>> tmpSetOfStates;
-
-				if (FiniteTreesTable.containsKey(trans.node)) {
-					tmpSetOfStates = FiniteTreesTable.get(trans.node);
-				} else {
-					tmpSetOfStates = new HashSet<HashSet<Integer>>();
-				}
-				if ((ac.contains(trans.rightChildren) && ac.contains(trans.leftChildren)) || FiniteTreesTable.containsKey(trans.leftChildren) && ac.contains(trans.rightChildren) || FiniteTreesTable.containsKey(trans.rightChildren)
-						&& ac.contains(trans.leftChildren) || FiniteTreesTable.containsKey(trans.leftChildren) && FiniteTreesTable.containsKey(trans.rightChildren)) {
+				
+				if ((ac.contains(trans.rightChildren) && ac.contains(trans.leftChildren)) 
+						|| FiniteTreesTable.containsKey(trans.leftChildren) && ac.contains(trans.rightChildren) 
+						|| FiniteTreesTable.containsKey(trans.rightChildren)&& ac.contains(trans.leftChildren) 
+						|| FiniteTreesTable.containsKey(trans.leftChildren) && FiniteTreesTable.containsKey(trans.rightChildren)) {
 					HashSet<Integer> tmpStates = new HashSet<Integer>();
 					tmpStates.add(trans.rightChildren);
 					tmpStates.add(trans.leftChildren);
+					if (FiniteTreesTable.containsKey(trans.node)) {
+						tmpSetOfStates = FiniteTreesTable.get(trans.node);
+					} else {
+						tmpSetOfStates = new HashSet<HashSet<Integer>>();
+					}
 					tmpSetOfStates.add(tmpStates);
 					transToEliminate.add(trans);
-				}
-				if (!tmpSetOfStates.isEmpty()) {
 					FiniteTreesTable.put(trans.node, tmpSetOfStates);
 					transitionAdded = true;
 				}
