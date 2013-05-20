@@ -25,9 +25,9 @@ public class FiniteTreesTable {
 				HashSet<HashSet<Integer>> tmpSetOfStates;
 				
 				if ((ac.contains(trans.rightChildren) && ac.contains(trans.leftChildren)) 
-						|| FiniteTreesTable.containsKey(trans.leftChildren) && ac.contains(trans.rightChildren) 
-						|| FiniteTreesTable.containsKey(trans.rightChildren)&& ac.contains(trans.leftChildren) 
-						|| FiniteTreesTable.containsKey(trans.leftChildren) && FiniteTreesTable.containsKey(trans.rightChildren)) {
+						|| FiniteTreesTable.containsKey(trans.leftChildren) && (!trans.node.equals(trans.leftChildren) || ac.contains(trans.node)) && ac.contains(trans.rightChildren) 
+						|| FiniteTreesTable.containsKey(trans.rightChildren) && (!trans.node.equals(trans.rightChildren) || ac.contains(trans.node)) && ac.contains(trans.leftChildren) 
+						|| FiniteTreesTable.containsKey(trans.leftChildren) && (!trans.node.equals(trans.leftChildren) || ac.contains(trans.node)) && FiniteTreesTable.containsKey(trans.rightChildren) && (!trans.node.equals(trans.rightChildren) || ac.contains(trans.node))) {
 					HashSet<Integer> tmpStates = new HashSet<Integer>();
 					tmpStates.add(trans.rightChildren);
 					tmpStates.add(trans.leftChildren);
