@@ -64,19 +64,25 @@ public class FiniteTreesTable {
 	}
 
 	public void removeIncoerentTrees() {
+		HashSet<HashSet<Integer>> treeToRemove = new HashSet<HashSet<Integer>>();
 		HashSet<Integer> keyToRemove = new HashSet<Integer>();
+		Set<Integer> goodStates = FiniteTreesTable.keySet();
 		for (Entry<Integer, HashSet<HashSet<Integer>>> entryOfTable : FiniteTreesTable.entrySet()) {
 			for (HashSet<Integer> tree : entryOfTable.getValue()) {
-				if (!FiniteTreesTable.keySet().containsAll(tree)) {
-					entryOfTable.getValue().remove(tree);
-					if (entryOfTable.getValue().isEmpty()) {
-						keyToRemove.add(entryOfTable.getKey());
-					}
+				if (!goodStates.containsAll(tree)) {
+					treeToRemove.add(tree);
 				}
+			}
+			for(HashSet<Integer> tree : treeToRemove){
+				entryOfTable.getValue().remove(tree);
+			}
+			treeToRemove.clear();
+			if (entryOfTable.getValue().isEmpty()) {
+				keyToRemove.add(entryOfTable.getKey());
 			}
 		}
 		for (Integer key : keyToRemove)
 			FiniteTreesTable.remove(key);
-		System.gc();
+		keyToRemove.clear();
 	}
 }

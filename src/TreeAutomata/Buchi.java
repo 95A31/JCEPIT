@@ -182,7 +182,7 @@ public class Buchi extends Automata {
 				for (Transition trans : transRelWorkCopy) {
 					if (trans.node.equals(tmpState)) {
 						if (trans.node == tmpState && (states.contains(trans.node) || trans.node.equals(initialState)) && states.contains(trans.leftChildren) && states.contains(trans.rightChildren)) {
-							if (trans.node.equals(trans.leftChildren) && trans.node.equals(trans.rightChildren) && !acceptanceCondition.contains(trans.node)) {
+							if ((trans.node.equals(trans.leftChildren) || trans.node.equals(trans.rightChildren)) && !acceptanceCondition.contains(trans.node)) {
 								continue;
 							}
 							if (acceptanceCondition.contains(trans.node)) {

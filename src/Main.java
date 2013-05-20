@@ -27,7 +27,7 @@ public class Main {
 		if(args.length < 2){
 			System.out.println("One or more argument(s) missing.");
 			System.out.println("EXAMPLE: java -jar JCEPIT.jar -R RabinExampleAutomata.txt");
-			System.out.println("EXAMPLE: java -jar JCEPIT.jar -B BUchiExampleAutomata.txt");
+			System.out.println("EXAMPLE: java -jar JCEPIT.jar -B BuchiExampleAutomata.txt");
 			return;
 		}
 

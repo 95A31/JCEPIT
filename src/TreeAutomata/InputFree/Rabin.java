@@ -318,7 +318,7 @@ public class Rabin extends Automata {
 				for (Transition trans : transRelWorkCopy) {
 					if (trans.node.equals(tmpState)) {
 						if (trans.node == tmpState && (states.contains(trans.node) || trans.node.equals(initialState)) && states.contains(trans.leftChildren) && states.contains(trans.rightChildren)) {
-							if (trans.node.equals(trans.leftChildren) && trans.node.equals(trans.rightChildren) && !isInSomeUSet(trans.node)) {
+							if ((trans.node.equals(trans.leftChildren) || trans.node.equals(trans.rightChildren)) && !isInSomeUSet(trans.node)) {
 								continue;
 							}
 							if (isInSomeUSet(trans.node)) {
