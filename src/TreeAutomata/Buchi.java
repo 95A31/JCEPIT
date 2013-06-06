@@ -115,10 +115,10 @@ public class Buchi extends Automata {
 
 		FiniteTreesTable ftt = new FiniteTreesTable(tr, ac);
 
-		for (int i = 0; i <= states.size(); i++) {
+		for (int i = 0; i <= states.size() && !ftt.hasEmptyTreesSet(initialState); i++) {
 			System.out.print("Checking for empty language... [" + (int) ((float) i / (float) (states.size() + 1) * 100) + "%]\r");
 			ftt.removeIncoerentTrees();
-			if (!ftt.containsBadStates() && !ftt.hasEmptyTreesSet(initialState)) {
+			if (!ftt.containsBadStates()) {
 				Buchi tmpBTA = (Buchi) clone();
 				tmpBTA.states = ftt.getStates();				
 				removeIncoerentTransition(tmpBTA.transitionRelation, tmpBTA.states);
