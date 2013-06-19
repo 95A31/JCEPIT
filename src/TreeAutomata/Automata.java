@@ -40,4 +40,19 @@ public abstract class Automata {
 		initialState = is;
 		transitionRelation = tr;
 	}
+	
+	public Automata(HashSet<Integer> s, Integer is,  HashSet<Transition> tr) {
+		alphabet = new HashSet<Character>();
+		states = s;
+		initialState = is;
+		transitionRelation = tr;
+	}	
+	
+	public Automata(HashSet<Integer> s, Integer is) {
+		alphabet = new HashSet<Character>();
+		states = s;
+		initialState = is;
+		transitionRelation = new HashSet<Transition>();
+	}
+	
 }

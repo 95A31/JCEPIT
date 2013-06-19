@@ -39,12 +39,11 @@ public class Main {
 				tmpBTA.toImageFile(args[1].substring(0, args[1].lastIndexOf('.')) + ".png");
 			}
 		} else if (args[0].matches("-R|-r")) {
-			Rabin tmpRA = Rabin.fromFile(args[1]);
-			TreeAutomata.InputFree.Rabin IFRTA = tmpRA.toInputFree();
-			TreeAutomata.InputFree.Rabin tmpIFRTA = IFRTA.recognizeEmptyLanguage();
-			System.out.println("Language recognized by automata " + (tmpIFRTA.states.isEmpty() ? "is " : "isn't ") + "empty.");
-			if (!tmpIFRTA.states.isEmpty()) {
-				tmpIFRTA.toImageFile(args[1].substring(0, args[1].lastIndexOf('.')) + ".png");
+			Rabin RA = Rabin.fromFile(args[1]);
+			Rabin tmpRA = RA.recognizeEmptyLanguage();
+			System.out.println("Language recognized by automata " + (tmpRA.states.isEmpty() ? "is " : "isn't ") + "empty.");
+			if (!tmpRA.states.isEmpty()) {
+				tmpRA.toImageFile(args[1].substring(0, args[1].lastIndexOf('.')) + ".png");
 			}
 		} else {
 			System.out.println("Unknow option: " + args[0]);
